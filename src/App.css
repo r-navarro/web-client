@@ -1,0 +1,124 @@
+:root {
+  --main-bg-color: #2196F3;
+  --app-bg-color: #E1F5FE;
+  --title-bg-color: #03A9F4;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 90%;
+}
+
+.menu {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+}
+
+@media only screen and (max-height: 100px) {
+  .menu {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    left: 0;
+  }
+}
+
+/* Login */
+
+.loginForm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  box-shadow: 1px 1px 7px #888888;
+  width: 350px;
+  display: flow-root;
+}
+
+.loginHeader {
+  background-color: var(--main-bg-color);
+  text-align: center;
+  color: white;
+  font-size: xx-large;
+  padding: 10px 0px 10px 0px;
+}
+
+.loginCircle {
+  height: 50px !important;
+  width: 50px !important;
+}
+
+.loginFieldsWrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.loginFields {
+  margin: 10px;
+}
+
+.loginFields button {
+  width: 100%
+}
+
+.badLogin {
+  margin: 10px 0px 10px 10px;
+  color: red;
+  font-style: italic;
+}
+
+/* menu */
+
+.invisible {
+  display: none !important;
+}
+
+.sidenav {
+  height: 100%;
+  width: 250px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
