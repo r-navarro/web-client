@@ -98,8 +98,7 @@ function getSuggestions(value) {
   return inputLength === 0
     ? []
     : suggestions.filter(suggestion => {
-      const keep =
-        count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
+      const keep = count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
 
       if (keep) {
         count += 1;
@@ -117,8 +116,15 @@ class DownshiftMultiple extends React.Component {
   };
 
   handleKeyDown = event => {
-    const { inputValue, selectedItem } = this.state;
-    if (selectedItem.length && !inputValue.length && keycode(event) === 'backspace') {
+    const { inputValue } = this.state;
+    let { selectedItem } = this.state;
+    if (keycode(event) === 'enter') {
+      selectedItem = [...selectedItem, inputValue];
+      this.setState({
+        inputValue: '',
+        selectedItem,
+      });
+    } else if (selectedItem.length && !inputValue.length && keycode(event) === 'backspace') {
       this.setState({
         selectedItem: selectedItem.slice(0, selectedItem.length - 1),
       });

@@ -9,7 +9,17 @@ html {
 }
 
 body {
-  min-height: 90%;
+  min-height: 100%;
+  margin: 0px;
+}
+
+.app-background {
+  min-height: 100vh;
+  background-color: var(--main-bg-color);
+}
+
+.app {
+  margin: 8px;
 }
 
 .menu {
@@ -38,7 +48,7 @@ body {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   box-shadow: 1px 1px 7px #888888;
-  width: 350px;
+  width: 300px;
   display: flow-root;
 }
 

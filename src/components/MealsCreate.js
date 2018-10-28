@@ -2,10 +2,13 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { sendMeal, showError, getMeals, fetchData } from '../actions';
+import { showError, getMeals, fetchData } from '../actions';
 import TextField from '@material-ui/core/TextField';
 import IngredientsInput from './fields/IngredientsInput';
 import Rating from './fields/Rating';
+import Collapse from '@material-ui/core/Collapse';
+import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
 
 const styles = theme => ({
     container: {
@@ -23,6 +26,9 @@ const styles = theme => ({
     menu: {
         width: 200,
     },
+    test: {
+        color: '#2196F3',
+    },
 });
 
 
@@ -31,20 +37,19 @@ class MealCreate extends React.Component {
     constructor(props) {
         super(props);
         this.sendMealClick = this.sendMealClick.bind(this);
-        this.meClick = this.meClick.bind(this);
         this.handleNameInput = this.handleNameInput.bind(this);
         this.handleRecipeInput = this.handleRecipeInput.bind(this);
         this.handleIngredientsInput = this.handleIngredientsInput.bind(this);
+        this.toggleClass = this.toggleClass.bind(this);
+        this.state = {
+            active: false,
+        };
     }
 
     sendMealClick() {
-        const { getMealsAndShowError, meal } = this.props;
+        const { createMeal, meal } = this.props;
         console.log(meal);
-    }
-
-    meClick() {
-        const { getMe } = this.props;
-        getMe();
+        createMeal(meal);
     }
 
     handleNameInput = event => {
@@ -64,44 +69,55 @@ class MealCreate extends React.Component {
 
     handleRatinginput = event => {
         const { meal } = this.props;
-        meal.value = event;
+        meal.score = event;
     }
 
+    toggleClass() {
+        const currentState = this.state.active;
+        this.setState({ active: !currentState });
+    };
+
     render() {
-        const { error, me, classes } = this.props;
+        const { error, classes } = this.props;
         return (
             <div>
                 <div>
-                    <TextField
-                        id="name-input"
-                        label="Name"
-                        className={classes.textField}
-                        margin="normal"
-                        onChange={this.handleNameInput}
-                    />
-                    <IngredientsInput
-                        onChange={this.handleIngredientsInput}
-                    />
-                    <TextField
-                        id="recipe-input"
-                        label="Recipe"
-                        multiline
-                        rowsMax="4"
-                        onChange={this.handleRecipeInput}
-                        className={classes.textField}
-                        margin="normal"
-                    />
-                    <Rating onChange={this.handleRatinginput} />
-                </div >
-                <div>
-                    <button onClick={this.sendMealClick}>Click</button>
-                    <button onClick={this.meClick}>me</button>
+                    <Collapse in={this.state.active}>
+                        <RemoveCircleOutline onClick={this.toggleClass} className={classes.test}/>
+                        <div>
+                            <TextField
+                                id="name-input"
+                                label="Name"
+                                className={classes.textField}
+                                margin="normal"
+                                onChange={this.handleNameInput}
+                            />
+                            <IngredientsInput
+                                onChange={this.handleIngredientsInput}
+                            />
+                            <TextField
+                                id="recipe-input"
+                                label="Recipe"
+                                multiline
+                                rowsMax="4"
+                                onChange={this.handleRecipeInput}
+                                className={classes.textField}
+                                margin="normal"
+                            />
+                            <Rating onChange={this.handleRatinginput} />
+                        </div >
+                        <div>
+                            <button onClick={this.sendMealClick}>Create</button>
+                        </div>
+                        <div>
+                            {error}
+                        </div>
+                    </Collapse>
                 </div>
                 <div>
-                    {error}
-                </div>
-                <div>
-                    {me.name}
+                    <Collapse in={!this.state.active}>
+                        <AddCircleOutline onClick={this.toggleClass} className={classes.test} />
+                    </Collapse>
                 </div>
             </div>
         );
@@ -113,26 +129,22 @@ const mapStateToProps = (state, ownProps) => {
         meal: state.meal.meal,
         meals: state.meal.meals,
         error: state.meal.error,
-        me: state.fetchReducer.data
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onSendMeal: (meal) => dispatch(sendMeal(meal)),
         getMeals: () => dispatch(getMeals()),
         getMealsAndShowError: (meals, error) => {
             dispatch(getMeals(meals));
             dispatch(showError(error));
         },
         doShowError: (error) => dispatch(showError(error)),
-        getMe: () => dispatch(fetchData('me', 'GET'))
+        createMeal: (meal) => dispatch(fetchData('','meals', 'post', meal))
     }
 }
 
 export default compose(
-    withStyles(styles, {
-        name: 'Menu',
-    }),
+    withStyles(styles),
     connect(mapStateToProps, mapDispatchToProps),
 )(MealCreate);

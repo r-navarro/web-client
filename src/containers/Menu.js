@@ -92,8 +92,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default compose(
-    withStyles(styles, {
-        name: 'Menu',
-    }),
+    withStyles(styles),
     connect(mapStateToProps, mapDispatchToProps),
 )(Menu);

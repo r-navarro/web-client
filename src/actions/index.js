@@ -1,7 +1,6 @@
 import history from '../History'
 
 export const SHOW_ERROR = 'SHOW_ERROR'
-export const SEND_MEAL = 'SEND_MEAL'
 export const GET_MEAL = 'GET_MEAL'
 export const LOGIN = 'LOGIN'
 export const LOGOUT = 'LOGOUT'
@@ -10,12 +9,6 @@ export const HAS_ERRORED = 'HAS_ERRORED'
 export const IS_LOADING = 'IS_LOADING'
 export const FETCH_DATA_SUCCESS = 'FETCH_DATA_SUCCESS'
 
-export const sendMeal = (meal) => {
-  return {
-    type: SEND_MEAL,
-    meal,
-  }
-}
 
 export const showError = (error) => {
   return {
@@ -63,10 +56,11 @@ export function isLoading(bool) {
   };
 }
 
-export function fetchDataSuccess(data) {
+export function fetchDataSuccess(varName, data) {
   return {
     type: FETCH_DATA_SUCCESS,
     data,
+    varName,
   };
 }
 
@@ -79,8 +73,9 @@ export const getHeaders = () => {
 }
 
 export const baseUrl = 'http://localhost:8080/';
+// export const baseUrl = 'https://rnavarro.net/api/';
 
-export function fetchData(url, method, body) {
+export function fetchData(varName, url, method, body) {
   return (dispatch) => {
     dispatch(isLoading(true));
 
@@ -91,7 +86,7 @@ export function fetchData(url, method, body) {
       credentials: 'include'
     })
       .then((response) => {
-        if(response.status === 403) {
+        if (response.status === 403) {
           history.push('/logout');
         }
         if (!response.ok) {
@@ -102,7 +97,7 @@ export function fetchData(url, method, body) {
         return response;
       })
       .then((response) => response.json())
-      .then((items) => dispatch(fetchDataSuccess(items)))
+      .then((items) => dispatch(fetchDataSuccess(varName, items)))
       .catch(() => dispatch(hasErrored(true)));
   };
 }
@@ -117,11 +112,11 @@ export function fetchHeader(url, method, body) {
       body: JSON.stringify(body),
       credentials: 'include',
     }).then((response) => {
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        dispatch(isLoading(false));
-        return response;
-      }).catch(() => dispatch(hasErrored(true)));
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      dispatch(isLoading(false));
+      return response;
+    }).catch(() => dispatch(hasErrored(true)));
   };
 }

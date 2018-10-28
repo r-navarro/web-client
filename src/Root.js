@@ -7,8 +7,7 @@ import App from './App'
 import Login from './components/Login';
 import Logout from './components/Logout';
 
-const Root = ({ store }) => (
-
+const Root = ({ store }) => ( 
   <Provider store={store}>
     <Router history={history}>
       <div>

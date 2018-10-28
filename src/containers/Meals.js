@@ -1,5 +1,5 @@
 import React from 'react';
-import Meals from './../components/Meals'
+import MealsSearch from './../components/MealsSearch'
 import MealsCreate from './../components/MealsCreate'
 
 class Chat extends React.Component {
@@ -8,7 +8,7 @@ class Chat extends React.Component {
   render() {
     return (
       <div>
-        <Meals />
+        <MealsSearch />
         <div className="chatroom">
           <MealsCreate />
         </div>

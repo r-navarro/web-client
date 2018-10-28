@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://nope.nope",
   "dependencies": {
-    "@material-ui/core": "^1.5.1",
+    "@material-ui/core": "^3.3.0",
     "@material-ui/icons": "^2.0.3",
     "downshift": "^2.2.3",
     "prop-types": "^15.6.0",
