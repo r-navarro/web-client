@@ -2,10 +2,11 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import compose from 'recompose/compose';
 import { connect } from 'react-redux';
-import { showError, getMeals, fetchData } from '../actions';
+import { showError, fetchData } from '../actions';
 import TextField from '@material-ui/core/TextField';
 import IngredientsInput from './fields/IngredientsInput';
 import Rating from './fields/Rating';
+import CreateButton from './fields/CreateButton';
 import Collapse from '@material-ui/core/Collapse';
 import AddCircleOutline from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutline from '@material-ui/icons/RemoveCircleOutline';
@@ -47,8 +48,7 @@ class MealCreate extends React.Component {
     }
 
     sendMealClick() {
-        const { createMeal, meal } = this.props;
-        console.log(meal);
+        const { createMeal, meal, } = this.props;
         createMeal(meal);
     }
 
@@ -78,12 +78,12 @@ class MealCreate extends React.Component {
     };
 
     render() {
-        const { error, classes } = this.props;
+        const { error, classes, loading, hasError } = this.props;
         return (
             <div>
                 <div>
                     <Collapse in={this.state.active}>
-                        <RemoveCircleOutline onClick={this.toggleClass} className={classes.test}/>
+                        <RemoveCircleOutline onClick={this.toggleClass} className={classes.test} />
                         <div>
                             <TextField
                                 id="name-input"
@@ -107,7 +107,10 @@ class MealCreate extends React.Component {
                             <Rating onChange={this.handleRatinginput} />
                         </div >
                         <div>
-                            <button onClick={this.sendMealClick}>Create</button>
+                            <CreateButton onClick={this.sendMealClick} 
+                            loading={loading} 
+                            hasError={hasError} 
+                            >Create</CreateButton>
                         </div>
                         <div>
                             {error}
@@ -125,22 +128,20 @@ class MealCreate extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    console.log(state.fetchReducer.error)
     return {
         meal: state.meal.meal,
         meals: state.meal.meals,
         error: state.meal.error,
+        loading: state.fetchReducer.isLoading,
+        hasError: state.fetchReducer.error,
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        getMeals: () => dispatch(getMeals()),
-        getMealsAndShowError: (meals, error) => {
-            dispatch(getMeals(meals));
-            dispatch(showError(error));
-        },
         doShowError: (error) => dispatch(showError(error)),
-        createMeal: (meal) => dispatch(fetchData('','meals', 'post', meal))
+        createMeal: (meal) => dispatch(fetchData('', 'meals', 'post', meal)),
     }
 }
 

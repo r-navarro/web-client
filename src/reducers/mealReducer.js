@@ -1,7 +1,7 @@
 import { SHOW_ERROR, GET_MEAL } from './../actions'
 
 
-let initialState = { message: 'Hello', meals: [], chatMessage: '', meal: {} }
+let initialState = { message: 'Hello', meals: [], error: '', meal: {} }
 
 const meal = (state = initialState, action) => {
     switch (action.type) {

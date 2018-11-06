@@ -88,17 +88,23 @@ export function fetchData(varName, url, method, body) {
       .then((response) => {
         if (response.status === 403) {
           history.push('/logout');
+        } else if (response.status === 400) {
+          response.json().then(json => {
+            dispatch(hasErrored(true));
+            dispatch(showError(json.message));
+            dispatch(isLoading(false));
+          });
+        } else if (!response.ok) {
+          throw Error(response);
+        } else {
+          dispatch(isLoading(false));
+          response.json().then(json => dispatch(fetchDataSuccess(varName, json)));
         }
-        if (!response.ok) {
-          throw Error(response.statusText);
-        }
-        dispatch(isLoading(false));
-
-        return response;
       })
-      .then((response) => response.json())
-      .then((items) => dispatch(fetchDataSuccess(varName, items)))
-      .catch(() => dispatch(hasErrored(true)));
+      .catch((ex) => {
+        dispatch(hasErrored(true));
+        dispatch(showError(ex.message));
+      });
   };
 }
 
@@ -117,6 +123,9 @@ export function fetchHeader(url, method, body) {
       }
       dispatch(isLoading(false));
       return response;
-    }).catch(() => dispatch(hasErrored(true)));
+    }).catch((ex) => {
+      dispatch(hasErrored(true));
+      dispatch(showError(ex));
+    });
   };
 }
