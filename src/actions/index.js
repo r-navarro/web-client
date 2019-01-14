@@ -72,8 +72,8 @@ export const getHeaders = () => {
   return headers;
 }
 
-export const baseUrl = 'http://localhost:8080/';
-// export const baseUrl = 'https://rnavarro.net/api/';
+// export const baseUrl = 'http://localhost:8080/';
+export const baseUrl = 'https://rnavarro.net/api/';
 
 export function fetchData(varName, url, method, body) {
   return (dispatch) => {
@@ -98,6 +98,8 @@ export function fetchData(varName, url, method, body) {
           throw Error(response);
         } else {
           dispatch(isLoading(false));
+          dispatch(hasErrored(false));
+          dispatch(showError(''));
           response.json().then(json => dispatch(fetchDataSuccess(varName, json)));
         }
       })

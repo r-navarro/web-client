@@ -52,6 +52,24 @@ class MealCreate extends React.Component {
         createMeal(meal);
     }
 
+    componentWillReceiveProps() {
+        const { hasError, loading } = this.props;
+        let { meal } = this.props;
+        if (!loading) {
+            if (!hasError) {
+                console.log('ok case',this.props)
+                setTimeout(()=> {
+                    this.setState({ active: false });
+                    this.createForm.reset();
+                    meal.name = '';
+                }, 500)
+            } else {
+                console.log('error case',this.props)
+                this.setState({ active: true });
+            }
+        }
+    }
+
     handleNameInput = event => {
         const { meal } = this.props;
         meal.name = event.target.value;
@@ -84,37 +102,39 @@ class MealCreate extends React.Component {
                 <div>
                     <Collapse in={this.state.active}>
                         <RemoveCircleOutline onClick={this.toggleClass} className={classes.test} />
-                        <div>
-                            <TextField
-                                id="name-input"
-                                label="Name"
-                                className={classes.textField}
-                                margin="normal"
-                                onChange={this.handleNameInput}
-                            />
-                            <IngredientsInput
-                                onChange={this.handleIngredientsInput}
-                            />
-                            <TextField
-                                id="recipe-input"
-                                label="Recipe"
-                                multiline
-                                rowsMax="4"
-                                onChange={this.handleRecipeInput}
-                                className={classes.textField}
-                                margin="normal"
-                            />
-                            <Rating onChange={this.handleRatinginput} />
-                        </div >
-                        <div>
-                            <CreateButton onClick={this.sendMealClick} 
-                            loading={loading} 
-                            hasError={hasError} 
-                            >Create</CreateButton>
-                        </div>
-                        <div>
-                            {error}
-                        </div>
+                        <form ref={form => this.createForm = form}>
+                            <div>
+                                <TextField
+                                    id="name-input"
+                                    label="Name"
+                                    className={classes.textField}
+                                    margin="normal"
+                                    onChange={this.handleNameInput}
+                                />
+                                <IngredientsInput
+                                    onChange={this.handleIngredientsInput}
+                                />
+                                <TextField
+                                    id="recipe-input"
+                                    label="Recipe"
+                                    multiline
+                                    rowsMax="4"
+                                    onChange={this.handleRecipeInput}
+                                    className={classes.textField}
+                                    margin="normal"
+                                />
+                                <Rating onChange={this.handleRatinginput} />
+                            </div >
+                            <div>
+                                <CreateButton onClick={this.sendMealClick}
+                                    loading={loading}
+                                    hasError={hasError}
+                                >Create</CreateButton>
+                            </div>
+                            <div>
+                                {error}
+                            </div>
+                        </form>
                     </Collapse>
                 </div>
                 <div>
@@ -128,7 +148,6 @@ class MealCreate extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    console.log(state.fetchReducer.error)
     return {
         meal: state.meal.meal,
         meals: state.meal.meals,
