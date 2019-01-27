@@ -58,7 +58,7 @@ class Login extends React.Component {
                         <span className="badLogin">{'Bad login !'}</span>
                     }
                     <span className="loginFields">
-                        <Button raised color="primary" onClick={this.onSubmit}>
+                        <Button raised="true" color="primary" onClick={this.onSubmit}>
                             Login
 						</Button>
                     </span>

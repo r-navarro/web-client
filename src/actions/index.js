@@ -127,7 +127,7 @@ export function fetchHeader(url, method, body) {
       return response;
     }).catch((ex) => {
       dispatch(hasErrored(true));
-      dispatch(showError(ex));
+      dispatch(showError(`error : ${ex}`));
     });
   };
 }

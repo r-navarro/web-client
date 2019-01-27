@@ -151,7 +151,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         meal: state.meal.meal,
         meals: state.meal.meals,
-        error: state.meal.error,
+        error: state.meal.error || '',
         loading: state.fetchReducer.isLoading,
         hasError: state.fetchReducer.error,
     }
